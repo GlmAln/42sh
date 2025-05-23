@@ -1,0 +1,25 @@
+CC = gcc
+CFLAGS = -std=c99 -pedantic -Werror -Wall -Wextra -Wvla -g3 -fsanitize=address
+LDFLAGS = -fsanitize=address
+LDLIBS = # -lcriterion
+
+#==================================================================
+
+NAME = parser_test
+
+SRC = parser/parser2.c parser/parser1.c lexer/lexer.c ast/ast.c ../tests/test_parser.c builtins/builtins.c hash/hash.c function/function.c
+
+OBJ = $(SRC:.c=.o)
+
+#==================================================================
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -g -fsanitize=address
+
+file.o: $(SRC)
+	$(CC) $(CFLAGS) -c $(SRC)
+
+clean:
+	$(RM) $(OBJ) $(NAME) $(TEST_SRC) $(TEST_OBJ)

@@ -1,0 +1,26 @@
+CC = gcc
+CFLAGS = -std=c99 -pedantic -Werror -Wall -Wextra -Wvla
+LDFLAGS = # -fsanitize=address
+LDLIBS = -lcriterion
+
+#==================================================================
+
+NAME = test
+SRC = parser/parser2.c parser/parser1.c lexer/lexer.c ast/ast.c  ../tests/test_lexer.c
+OBJ = $(SRC:.c=.o)
+
+#==================================================================
+
+all : check
+
+file.o: $(SRC)
+	$(CC) $(CFLAGS) -c $(SRC)
+
+check: $(OBJ)
+	$(CC) $(CFLAGS) -o testsuite $(OBJ) $(LDFLAGS) $(LDLIBS) && ./testsuite 1> /dev/null
+
+check_lexer: $(OBJ)
+	$(CC) $(CFLAGS) -o testsuitelexer $(OBJ) $(LDFLAGS) $(LDLIBS) && ./testsuitelexer 1> /dev/null
+
+clean:
+	$(RM) $(OBJ) $(NAME) $(TEST_SRC) $(TEST_OBJ) testsuite

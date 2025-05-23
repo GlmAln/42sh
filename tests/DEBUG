@@ -1,0 +1,23 @@
+CC = gcc
+CFLAGS = -std=c99 -pedantic -Werror -Wall -Wextra -Wvla -g3 -fsanitize=address
+LDFLAGS = -fsanitize=address
+LDLIBS = # -lcriterion
+
+#==================================================================
+
+NAME = debug
+SRC = parser/parser2.c parser/parser1.c lexer/lexer.c ast/ast.c eval_ast/evaluate.c builtins/builtins.c  hash/hash.c 42sh.c function/function.c
+OBJ = $(SRC:.c=.o)
+
+#==================================================================
+
+all : $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+
+file.o: $(SRC)
+	$(CC) $(CFLAGS) -c $(SRC)
+
+clean:
+	$(RM) $(OBJ) $(NAME) $(TEST_SRC) $(TEST_OBJ) debug
